@@ -32,6 +32,10 @@ class BlackScholesModel:
     """
 
     def __init__(self, S, K, T, r, sigma):
+        self.put_price = None
+        self.call_price = None
+        self.d2 = None
+        self.d1 = None
         self.S = S
         self.K = K
         self.T = T
@@ -41,22 +45,20 @@ class BlackScholesModel:
     def d1(self):
         numerator_ = np.log(self.S / self.K) + (self.r + 0.5 * self.sigma ** 2) * self.T
         denominator_ = self.sigma * np.sqrt(self.T)
-        return numerator_ / denominator_
+        self.d1 = numerator_ / denominator_
+        return self.d1
 
     def d2(self):
-        return self.d1() - self.sigma * np.sqrt(self.T)
+        self.d2 = self.d1() - self.sigma * np.sqrt(self.T)
+        return self.d2
 
     def call_price(self):
-        d1_ = self.d1()
-        d2_ = self.d2()
-
-        return self.S * norm.cdf(d1_) - self.K * np.exp(-self.r * self.T) * norm.cdf(d2_)
+        self.call_price = self.S * norm.cdf(self.d1) - self.K * np.exp(-self.r * self.T) * norm.cdf(self.d2)
+        return self.call_price
 
     def put_price(self):
-        d1_ = self.d1()
-        d2_ = self.d2()
-
-        return self.K * np.exp(-self.r * self.T) * norm.cdf(-d2_) - self.S * norm.cdf(-d1_)
+        self.put_price = self.K * np.exp(-self.r * self.T) * norm.cdf(-self.d2) - self.S * norm.cdf(-self.d2)
+        return self.put_price
 
     def call_bounds(self):
         min_call_price = max(0, self.S - self.K * np.exp(-self.r * self.T))
@@ -69,3 +71,10 @@ class BlackScholesModel:
         max_put_price = self.K
 
         return min_put_price, max_put_price
+
+    def run(self):
+        self.d1()
+        self.d2()
+        self.call_price()
+        self.put_price()
+
