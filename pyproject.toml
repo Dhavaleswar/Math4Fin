@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "math4fin"
+version = "0.1.0"
+description = ""
+authors = ["Dhavaleswar <93dhavaleshwar@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+kiteconnect = "^5.0.1"
+pandas = "^2.2.3"
+scikit-learn = "^1.5.2"
+yfinance = "^0.2.50"
+matplotlib = "^3.9.2"
+plotly = "^5.24.1"
+jupyterlab = "^4.3.1"
+seaborn = "^0.13.2"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
